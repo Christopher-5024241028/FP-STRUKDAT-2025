@@ -64,6 +64,4 @@ g++ main.cpp -o sfml_sim -lsfml-graphics -lsfml-window -lsfml-system
 
 Laporan proyek ini diwakili oleh file **`README.md`** ini. Setiap *commit* ke repositori ini mencerminkan kemajuan implementasi dan *debugging* fitur simulasi partikel.
 
------
 
-Bagaimana, apakah ada bagian lain yang ingin Anda tambahkan atau ubah pada draf `README.md` ini?
