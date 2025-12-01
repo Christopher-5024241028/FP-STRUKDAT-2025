@@ -1,0 +1,50 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build SFML Program",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                // Path file input: Gunakan kutip tunggal untuk mengamankan spasi dalam path.
+                "'${workspaceFolder}/main.cpp'", 
+                
+                // Path ke folder include SFML
+                "-I", "/mnt/c/SFML/SFML-2.6.1/include", 
+                // Path ke folder lib SFML
+                "-L", "/mnt/c/SFML/SFML-2.6.1/lib", 
+                
+                // Library yang digunakan
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system",
+                
+                "-o",
+                // Path file output: Hapus .exe
+                "'${workspaceFolder}/sfml_sim'" 
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "Run SFML Program",
+            "type": "shell",
+            // Command: Menggunakan export LD_LIBRARY_PATH untuk memberitahu WSL lokasi library SFML.
+            // Kemudian, jalankan executable yang sudah dicompile (tanpa .exe).
+            "command": "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mnt/c/SFML/SFML-2.6.1/lib && '${workspaceFolder}/sfml_sim'",
+            
+            "dependsOn": "Build SFML Program",
+            "group": "test",
+            "presentation": {
+                "reveal": "always"
+            }
+        }
+    ]
+}
