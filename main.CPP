@@ -4,7 +4,10 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <sstream> 
+#include <iomanip> // Wajib ada untuk std::setprecision
 
+// --- KONSTANTA SIMULASI ---
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 const float MIN_RADIUS = 5.0f;
@@ -12,6 +15,13 @@ const float MAX_RADIUS = 20.0f;
 const float MAX_INITIAL_VELOCITY = 100.0f;
 const int INITIAL_PARTICLE_COUNT = 10;
 
+// --- KONSTANTA QUADTREE ---
+const int QT_CAPACITY = 4;
+
+// Enumerasi untuk Mode Deteksi Tabrakan
+enum CollisionMode { BRUTE_FORCE, QUADTREE_MODE };
+
+// Struktur Partikel (Bola)
 struct Particle {
     sf::Vector2f position;
     sf::Vector2f velocity;
@@ -27,6 +37,87 @@ struct Particle {
         position += velocity * deltaTime;
     }
 };
+
+// --- STRUKTUR QUADTREE ---
+struct Quadtree {
+    sf::FloatRect boundary;
+    int capacity;
+    std::vector<Particle*> particles;
+    bool divided = false;
+
+    Quadtree* northwest = nullptr;
+    Quadtree* northeast = nullptr;
+    Quadtree* southwest = nullptr;
+    Quadtree* southeast = nullptr;
+
+    Quadtree(const sf::FloatRect& bounds, int cap) : boundary(bounds), capacity(cap) {}
+
+    ~Quadtree() {
+        delete northwest;
+        delete northeast;
+        delete southwest;
+        delete southeast;
+    }
+
+    void subdivide() {
+        float x = boundary.left;
+        float y = boundary.top;
+        float w = boundary.width / 2.0f;
+        float h = boundary.height / 2.0f;
+
+        northwest = new Quadtree(sf::FloatRect(x, y, w, h), capacity);
+        northeast = new Quadtree(sf::FloatRect(x + w, y, w, h), capacity);
+        southwest = new Quadtree(sf::FloatRect(x, y + h, w, h), capacity);
+        southeast = new Quadtree(sf::FloatRect(x + w, y + h, w, h), capacity);
+        
+        divided = true;
+    }
+
+    bool insert(Particle* p) {
+        if (!boundary.contains(p->position)) {
+            return false;
+        }
+
+        if (particles.size() < capacity) {
+            particles.push_back(p);
+            return true;
+        }
+
+        if (!divided) {
+            subdivide();
+        }
+
+        if (northwest->insert(p)) return true;
+        if (northeast->insert(p)) return true;
+        if (southwest->insert(p)) return true;
+        if (southeast->insert(p)) return true;
+
+        return false;
+    }
+
+    void query(std::vector<Particle*>& found, const sf::FloatRect& range) {
+        if (!boundary.intersects(range)) {
+            return;
+        }
+
+        for (Particle* p : particles) {
+            // Perlu dicek apakah partikel berada di dalam range (tidak hanya boundary)
+            if (p->position.x >= range.left && p->position.x <= (range.left + range.width) &&
+                p->position.y >= range.top && p->position.y <= (range.top + range.height)) {
+                found.push_back(p);
+            }
+        }
+
+        if (divided) {
+            northwest->query(found, range);
+            northeast->query(found, range);
+            southwest->query(found, range);
+            southeast->query(found, range);
+        }
+    }
+};
+
+// --- FUNGSI UTILITY ---
 
 sf::Color getRandomColor() {
     int choice = rand() % 5;
@@ -57,13 +148,11 @@ Particle createNewParticle(float x, float y) {
     p.radius = getRandomRadius();
     p.calculateMass();
     p.color = getRandomColor();
-    
     p.velocity = getRandomVelocity(); 
-
     return p;
 }
 
-void handleParticleCollision(Particle& p1, Particle& p2) {
+void handleCollision(Particle& p1, Particle& p2) {
     sf::Vector2f normal = p1.position - p2.position;
     float distSq = normal.x * normal.x + normal.y * normal.y;
     float dist = std::sqrt(distSq);
@@ -108,48 +197,154 @@ void handleBoundaryCollision(Particle& p) {
     }
 }
 
+
+// --- 1. MODE BRUTE FORCE (O(N^2)) ---
+void processBruteForce(std::vector<Particle>& particles) {
+    for (size_t i = 0; i < particles.size(); ++i) {
+        for (size_t j = i + 1; j < particles.size(); ++j) {
+            handleCollision(particles[i], particles[j]);
+        }
+    }
+}
+
+// --- 2. MODE QUADTREE ---
+void processQuadtree(std::vector<Particle>& particles) {
+    Quadtree qt(sf::FloatRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), QT_CAPACITY);
+    
+    std::vector<Particle*> p_pointers;
+    for (auto& p : particles) {
+        p_pointers.push_back(&p);
+    }
+
+    for (Particle* p : p_pointers) {
+        qt.insert(p);
+    }
+
+    for (size_t i = 0; i < particles.size(); ++i) {
+        Particle& p1 = particles[i];
+        
+        float searchSize = MAX_RADIUS * 2.5f; 
+        sf::FloatRect range(p1.position.x - searchSize, 
+                            p1.position.y - searchSize, 
+                            searchSize * 2, 
+                            searchSize * 2);
+
+        std::vector<Particle*> neighbors;
+        qt.query(neighbors, range);
+
+        for (Particle* p_neighbor : neighbors) {
+            Particle& p2 = *p_neighbor;
+            
+            if (&p1 == &p2) continue;
+            
+            handleCollision(p1, p2);
+        }
+    }
+}
+
+// --- FUNGSI UTAMA (MAIN) ---
+
 int main() {
     srand(time(NULL));
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "C++ Particle Collision (5 Colors)");
-    window.setFramerateLimit(60);
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Collision Mode Switcher");
 
     std::vector<Particle> particles;
     sf::Clock clock;
+    sf::Clock fpsClock;
+    int frameCount = 0;
 
+    sf::Font font;
+    // PENTING: Menggunakan path lengkap untuk font DejaVuSans.ttf yang diinstal melalui apt
+    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")) { 
+        std::cerr << "Peringatan: Gagal memuat font sistem. Teks FPS/Mode mungkin tidak terlihat." << std::endl;
+        // JANGAN gunakan EXIT_FAILURE, agar program tetap menampilkan bola
+    }
+    
+    // Text Mode
+    sf::Text modeText;
+    modeText.setFont(font);
+    modeText.setCharacterSize(18);
+    modeText.setFillColor(sf::Color::White);
+    modeText.setPosition(10, 10);
+
+    // Text FPS
+    sf::Text fpsText;
+    fpsText.setFont(font);
+    fpsText.setCharacterSize(18);
+    fpsText.setFillColor(sf::Color::Yellow);
+    fpsText.setPosition(10, 30);
+
+    // Variabel state
+    CollisionMode currentMode = BRUTE_FORCE;
+
+    // Inisialisasi Partikel Awal
     for (int i = 0; i < INITIAL_PARTICLE_COUNT; ++i) {
         float randX = (float)(rand() % (WINDOW_WIDTH - (int)MAX_RADIUS * 2) + MAX_RADIUS);
         float randY = (float)(rand() % (WINDOW_HEIGHT - (int)MAX_RADIUS * 2) + MAX_RADIUS);
         particles.push_back(createNewParticle(randX, randY));
     }
 
+    // --- GAME LOOP UTAMA ---
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
         sf::Event event;
 
+        // Penanganan Event (Input)
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
             
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left) {
-                    particles.push_back(createNewParticle((float)event.mouseButton.x, (float)event.mouseButton.y));
+            // Switch Mode saat tombol TAB ditekan
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Tab) {
+                if (currentMode == BRUTE_FORCE) {
+                    currentMode = QUADTREE_MODE;
+                } else {
+                    currentMode = BRUTE_FORCE;
                 }
+            }
+            
+            // Spawn partikel saat klik kiri mouse
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                particles.push_back(createNewParticle((float)event.mouseButton.x, (float)event.mouseButton.y));
             }
         }
 
+        // ------------------ LOGIKA PENGHITUNGAN FPS ------------------
+        frameCount++;
+        if (fpsClock.getElapsedTime().asSeconds() >= 1.0f) {
+            float fps = frameCount / fpsClock.getElapsedTime().asSeconds();
+            std::stringstream ss;
+            ss << "FPS: " << std::fixed << std::setprecision(0) << fps; 
+            fpsText.setString(ss.str());
+            
+            // Reset counter
+            frameCount = 0;
+            fpsClock.restart();
+        }
+        // -------------------------------------------------------------
+
+
+        // 2. Logika Update (Fisika)
+        
+        // A. Update Posisi dan Batas
         for (auto& p : particles) {
             p.update(deltaTime);
             handleBoundaryCollision(p);
         }
         
-        for (size_t i = 0; i < particles.size(); ++i) {
-            for (size_t j = i + 1; j < particles.size(); ++j) {
-                handleParticleCollision(particles[i], particles[j]);
-            }
+        // B. Deteksi dan Respons Tabrakan (Mode Beralih)
+        if (currentMode == BRUTE_FORCE) {
+            processBruteForce(particles);
+            modeText.setString("Mode: BRUTE FORCE (O(N^2)) | Partikel: " + std::to_string(particles.size()));
+        } else {
+            processQuadtree(particles);
+            modeText.setString("Mode: QUADTREE (O(N log N)) | Partikel: " + std::to_string(particles.size()));
         }
 
+        // 3. Rendering
         window.clear(sf::Color::Black);
 
+        // Gambar setiap partikel
         for (const auto& p : particles) {
             sf::CircleShape shape(p.radius);
             shape.setFillColor(p.color);
@@ -157,7 +352,11 @@ int main() {
             shape.setPosition(p.position);
             window.draw(shape);
         }
-
+        
+        // Gambar Teks Mode dan FPS
+        window.draw(modeText);
+        window.draw(fpsText); 
+        
         window.display();
     }
 
