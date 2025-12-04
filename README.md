@@ -61,3 +61,5 @@ g++ main.cpp -o sfml_sim -lsfml-graphics -lsfml-window -lsfml-system
 
 1.  **Klik Kiri:** Tambahkan partikel baru.
 2.  **Tekan TAB:** Beralih antara mode **BRUTE FORCE** dan **QUADTREE** untuk mengamati perubahan pada nilai FPS secara *real-time*.
+
+[![Tonton Video di YouTube](https://img.youtube.com/vi/6wiGlUAlK6g/hqdefault.jpg)](https://youtu.be/6wiGlUAlK6g)
