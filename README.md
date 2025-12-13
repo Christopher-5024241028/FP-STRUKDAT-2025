@@ -64,14 +64,20 @@ g++ main.cpp -o sfml_sim -lsfml-graphics -lsfml-window -lsfml-system
 
 
 10/11/2025 : Memahami konsep yang ingin digunakan untuk final project strukdat
+
 14/11/2025 : Mencoba untuk membuat layar dengan fitur ketika melakukan klik pada mouse akan menambahkan jumlah bola, dan memberikan bentuk dan warna yang berbeda untuk tiap bola
+
 16/11/2025: Mencoba untuk menggunakan Quadtree dan Brute Force
+
 19/11/2025: Membuat Readme
+
 25/11/2025 : Memberikan fitur tambahan untuk mengubah antara quadtree dan bruteforce menggunakan tab
+
 29/11/2025 : Menambahkan fitur untuk melihat mode apa yang sedang digunakan, jumlah partikel (bola) yang berada pada layar, serta memberikan fps tracker
+
 07/12/2025 : Mengubah jumlah awal bola menjadi 700 agar dapat terlihat perbedaan yang signifikan pada quadtree dan bruteforce
 
 ##  Demonstrasi Simulasi
 
-![Demonstrasi Partikel Brute Force vs Quadtree](![2025-12-1312-04-02-ezgif com-optimize (1)](https://github.com/user-attachments/assets/29df67bb-97db-434e-a96f-f24ebe917281)
+(![2025-12-1312-04-02-ezgif com-optimize (1)](https://github.com/user-attachments/assets/29df67bb-97db-434e-a96f-f24ebe917281)
 )
