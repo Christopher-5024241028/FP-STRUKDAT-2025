@@ -1,12 +1,12 @@
-# ☄️ Particle Collision Simulator (C++ & SFML)
+# Particle Collision Simulator (C++ & SFML)
 
 Simulasi ini adalah proyek yang menguji dan membandingkan efisiensi algoritma deteksi tabrakan di lingkungan dua dimensi. Program ini menggunakan **C++** dan *library* **SFML** untuk visualisasi dan manajemen *game loop*.
 
-## 🌟 Tentang Program
+##  Tentang Program
 
 [cite_start]Program ini mensimulasikan sekumpulan partikel (bola) berwarna-warni yang bergerak secara acak, memantul satu sama lain, dan mematuhi hukum fisika dasar[cite: 1, 2]. [cite_start]Fokus utama proyek ini adalah kemampuan untuk **beralih secara *real-time* antara dua metode deteksi tabrakan** yang berbeda untuk membandingkan kinerja (FPS)[cite: 3].
 
-### 🛠️ Tools & Technologies
+###  Tools & Technologies
 
   * [cite_start]**Bahasa Pemrograman:** C++ [cite: 1]
   * [cite_start]**Library Grafis:** SFML 2.6.1+ [cite: 1]
@@ -15,14 +15,14 @@ Simulasi ini adalah proyek yang menguji dan membandingkan efisiensi algoritma de
 
 -----
 
-## 🎯 Fitur Utama
+##  Fitur Utama
 
 ### 1\. Perbandingan Algoritma Deteksi Tabrakan
 
 Program mendukung dua mode deteksi tabrakan yang dapat dialihkan pengguna:
 
-  * **⚔️ Brute Force (O(N²)):** Metode dasar yang membandingkan setiap partikel dengan setiap partikel lainnya. [cite_start]Digunakan sebagai patokan untuk mengukur kompleksitas[cite: 1].
-  * [cite_start]**🌳 Quadtree (O(N log N)):** Struktur data hierarkis spasial yang digunakan untuk secara signifikan **mengurangi jumlah perbandingan** tabrakan, meningkatkan kinerja saat jumlah partikel besar[cite: 1].
+  * ** Brute Force (O(N²)):** Metode dasar yang membandingkan setiap partikel dengan setiap partikel lainnya. [cite_start]Digunakan sebagai patokan untuk mengukur kompleksitas[cite: 1].
+  * [cite_start]** Quadtree (O(N log N)):** Struktur data hierarkis spasial yang digunakan untuk secara signifikan **mengurangi jumlah perbandingan** tabrakan, meningkatkan kinerja saat jumlah partikel besar[cite: 1].
 
 ### 2\. Interaktivitas & Debugging Real-Time (Key Features)
 
@@ -38,7 +38,7 @@ Program mendukung dua mode deteksi tabrakan yang dapat dialihkan pengguna:
 
 -----
 
-## 🚀 Cara Menjalankan Program
+##  Cara Menjalankan Program
 
 ### Prasyarat
 
@@ -62,4 +62,4 @@ g++ main.cpp -o sfml_sim -lsfml-graphics -lsfml-window -lsfml-system
 1.  **Klik Kiri:** Tambahkan partikel baru.
 2.  **Tekan TAB:** Beralih antara mode **BRUTE FORCE** dan **QUADTREE** untuk mengamati perubahan pada nilai FPS secara *real-time*.
 
-[![Tonton Video di YouTube](https://img.youtube.com/vi/6wiGlUAlK6g/hqdefault.jpg)](https://youtu.be/6wiGlUAlK6g)
+
