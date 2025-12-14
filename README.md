@@ -1,4 +1,4 @@
-##  Tentang Program
+**Tentang Program**
 
 Program ini mensimulasikan sekumpulan partikel (bola) berwarna-warni yang bergerak secara acak, memantul satu sama lain, dan mematuhi hukum fisika dasar. Fokus utama proyek ini adalah kemampuan untuk **beralih secara *real-time* antara dua metode deteksi tabrakan** yang berbeda untuk membandingkan kinerja (FPS).
 
@@ -11,30 +11,30 @@ Program ini mensimulasikan sekumpulan partikel (bola) berwarna-warni yang berger
 
 ---
 
-##  Fitur Utama
+**Fitur Utama**
 
-###1. Perbandingan Algoritma Deteksi TabrakanProgram mendukung dua mode deteksi tabrakan yang dapat dialihkan pengguna:
+1. Perbandingan Algoritma Deteksi TabrakanProgram mendukung dua mode deteksi tabrakan yang dapat dialihkan pengguna:
 
   * ** Brute Force (O(N²)):** Metode dasar yang membandingkan setiap partikel dengan setiap partikel lainnya. Digunakan sebagai patokan untuk mengukur kompleksitas.
   * ** Quadtree (O(N log N)):** Struktur data hierarkis spasial yang digunakan untuk secara signifikan **mengurangi jumlah perbandingan** tabrakan, meningkatkan kinerja saat jumlah partikel besar.
 
-###2. Interaktivitas & Debugging Real-Time (Key Features)  * **Mode Switcher (Tombol TAB):** Pengguna dapat menekan tombol **TAB** pada *keyboard* untuk langsung beralih antara mode **BRUTE FORCE** dan **QUADTREE**.
+2. Interaktivitas & Debugging Real-Time (Key Features)  * **Mode Switcher (Tombol TAB):** Pengguna dapat menekan tombol **TAB** pada *keyboard* untuk langsung beralih antara mode **BRUTE FORCE** dan **QUADTREE**.
   * **FPS Tracker:** Menampilkan *Frames Per Second* (FPS) secara *real-time* di sudut kiri atas layar. Nilai ini sangat penting untuk membandingkan kinerja kedua mode tabrakan.
   * **Indikator Mode & Partikel:** Teks di layar menampilkan **Mode** yang sedang aktif dan **Jumlah Partikel** yang ada di simulasi.
 
-###3. Dinamika Partikel  * **Spawn On Click:** Klik di mana saja pada layar untuk menambahkan partikel baru dengan kecepatan, ukuran, dan warna acak.
+3. Dinamika Partikel  * **Spawn On Click:** Klik di mana saja pada layar untuk menambahkan partikel baru dengan kecepatan, ukuran, dan warna acak.
   * **Ukuran dan Kecepatan Bervariasi:** Setiap bola memiliki radius, massa, dan kecepatan awal yang berbeda, memastikan lingkungan simulasi yang dinamis.
   * **5 Pilihan Warna:** Partikel diinisialisasi secara acak dengan salah satu dari lima warna: Merah, Biru, Hijau, Pink, atau Ungu.
 
 ---
 
-##  Cara Menjalankan Program
+**Cara Menjalankan Program**
 
-###PrasyaratAnda memerlukan *compiler* C++ (seperti g++ atau MSVC) dan *library* SFML yang telah dikonfigurasi.
+Prasyarat: Anda memerlukan *compiler* C++ (seperti g++ atau MSVC) dan *library* SFML yang telah dikonfigurasi.
 
   * **Penting (WSL/Linux):** Pastikan Anda telah menginstal *library* font standar Linux, seperti **`fonts-dejavu-core`**, agar FPS Tracker dan teks mode dapat ditampilkan dengan benar.
 
-###Kompilasi dan EksekusiGunakan konfigurasi `tasks.json` Anda (yang telah disesuaikan untuk SFML dan LD_LIBRARY_PATH) untuk mengompilasi dan menjalankan program.
+Kompilasi dan EksekusiGunakan konfigurasi `tasks.json` Anda (yang telah disesuaikan untuk SFML dan LD_LIBRARY_PATH) untuk mengompilasi dan menjalankan program.
 
 **Contoh Perintah Kompilasi (Linux/MinGW):**
 
