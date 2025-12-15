@@ -18,8 +18,9 @@ Tools & Technologies
 
 1. Perbandingan Algoritma Deteksi TabrakanProgram mendukung dua mode deteksi tabrakan yang dapat dialihkan pengguna:
 
-  * ** Brute Force (O(N²)):** Metode dasar yang membandingkan setiap partikel dengan setiap partikel lainnya. Digunakan sebagai patokan untuk mengukur kompleksitas.
-  * ** Quadtree (O(N log N)):** Struktur data hierarkis spasial yang digunakan untuk secara signifikan **mengurangi jumlah perbandingan** tabrakan, meningkatkan kinerja saat jumlah partikel besar.
+  * **Brute Force (O(N²)):** Metode dasar yang membandingkan setiap partikel dengan setiap partikel lainnya. Digunakan sebagai patokan untuk mengukur kompleksitas.
+  
+  * **Quadtree (O(N log N)):** Struktur data hierarkis spasial yang digunakan untuk secara signifikan **mengurangi jumlah perbandingan** tabrakan, meningkatkan kinerja saat jumlah partikel besar.
 
 2. Interaktivitas & Debugging Real-Time (Key Features)  * **Mode Switcher (Tombol TAB):** Pengguna dapat menekan tombol **TAB** pada *keyboard* untuk langsung beralih antara mode **BRUTE FORCE** dan **QUADTREE**.
   * **FPS Tracker:** Menampilkan *Frames Per Second* (FPS) secara *real-time* di sudut kiri atas layar. Nilai ini sangat penting untuk membandingkan kinerja kedua mode tabrakan.
