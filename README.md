@@ -2,11 +2,14 @@
 
 Program ini mensimulasikan sekumpulan partikel (bola) berwarna-warni yang bergerak secara acak, memantul satu sama lain, dan mematuhi hukum fisika dasar. Fokus utama proyek ini adalah kemampuan untuk **beralih secara *real-time* antara dua metode deteksi tabrakan** yang berbeda untuk membandingkan kinerja (FPS).
 
-###  Tools & Technologies
+Tools & Technologies
 
 **Bahasa Pemrograman:** C++
+
 **Library Grafis:** SFML 2.6.1+
+
   * **Version Control:** Git
+  
   * **Metode Pelaporan:** README.md sebagai laporan.
 
 ---
@@ -32,7 +35,7 @@ Program ini mensimulasikan sekumpulan partikel (bola) berwarna-warni yang berger
 
 Prasyarat: Anda memerlukan *compiler* C++ (seperti g++ atau MSVC) dan *library* SFML yang telah dikonfigurasi.
 
-  * **Penting (WSL/Linux):** Pastikan Anda telah menginstal *library* font standar Linux, seperti **`fonts-dejavu-core`**, agar FPS Tracker dan teks mode dapat ditampilkan dengan benar.
+  * **Penting (WSL/Linux):** Pastikan Anda telah menginstal *library* font standar Linux, seperti **`sixty.fft`**, agar FPS Tracker dan teks mode dapat ditampilkan dengan benar.
 
 Kompilasi dan EksekusiGunakan konfigurasi `tasks.json` Anda (yang telah disesuaikan untuk SFML dan LD_LIBRARY_PATH) untuk mengompilasi dan menjalankan program.
 
