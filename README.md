@@ -22,11 +22,15 @@ Tools & Technologies
   
   * **Quadtree (O(N log N)):** Struktur data hierarkis spasial yang digunakan untuk secara signifikan **mengurangi jumlah perbandingan** tabrakan, meningkatkan kinerja saat jumlah partikel besar.
 
-2. Interaktivitas & Debugging Real-Time (Key Features)  * **Mode Switcher (Tombol TAB):** Pengguna dapat menekan tombol **TAB** pada *keyboard* untuk langsung beralih antara mode **BRUTE FORCE** dan **QUADTREE**.
+2. Interaktivitas & Debugging Real-Time (Key Features)
+
+   * **Mode Switcher (Tombol TAB):** Pengguna dapat menekan tombol **TAB** pada *keyboard* untuk langsung beralih antara mode **BRUTE FORCE** dan **QUADTREE**.
+   
   * **FPS Tracker:** Menampilkan *Frames Per Second* (FPS) secara *real-time* di sudut kiri atas layar. Nilai ini sangat penting untuk membandingkan kinerja kedua mode tabrakan.
+  
   * **Indikator Mode & Partikel:** Teks di layar menampilkan **Mode** yang sedang aktif dan **Jumlah Partikel** yang ada di simulasi.
 
-3. Dinamika Partikel  * **Spawn On Click:** Klik di mana saja pada layar untuk menambahkan partikel baru dengan kecepatan, ukuran, dan warna acak.
+4. Dinamika Partikel  * **Spawn On Click:** Klik di mana saja pada layar untuk menambahkan partikel baru dengan kecepatan, ukuran, dan warna acak.
   * **Ukuran dan Kecepatan Bervariasi:** Setiap bola memiliki radius, massa, dan kecepatan awal yang berbeda, memastikan lingkungan simulasi yang dinamis.
   * **5 Pilihan Warna:** Partikel diinisialisasi secara acak dengan salah satu dari lima warna: Merah, Biru, Hijau, Pink, atau Ungu.
 
