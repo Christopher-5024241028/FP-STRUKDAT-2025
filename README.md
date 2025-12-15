@@ -72,4 +72,5 @@ g++ main.cpp -o sfml_sim -lsfml-graphics -lsfml-window -lsfml-system
 07/12/2025 : Mengubah jumlah awal bola menjadi 700 agar dapat terlihat perbedaan yang signifikan pada quadtree dan bruteforce
 
 Demonstrasi Simulasi
+
 ![2025-12-1312-04-02-ezgif com-optimize (1)](https://github.com/user-attachments/assets/29df67bb-97db-434e-a96f-f24ebe917281)
